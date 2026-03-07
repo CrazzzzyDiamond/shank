@@ -12,8 +12,6 @@ const HEIGHT = 160;
 const STAVE_X = 16;
 const STAVE_Y = 24;
 const STAVE_WIDTH = WIDTH - STAVE_X * 2;
-const NOTE_COLOR = '#e4e4e7'; // zinc-200
-
 export function NoteDisplay({ note, clef = 'treble' }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -21,14 +19,17 @@ export function NoteDisplay({ note, clef = 'treble' }: Props) {
     const container = containerRef.current;
     if (!container) return;
 
+    const noteColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-note').trim() || '#e4e4e7';
+
     container.innerHTML = '';
 
     const renderer = new Renderer(container, Renderer.Backends.SVG);
     renderer.resize(WIDTH, HEIGHT);
 
     const ctx = renderer.getContext();
-    ctx.setFillStyle(NOTE_COLOR);
-    ctx.setStrokeStyle(NOTE_COLOR);
+    ctx.setFillStyle(noteColor);
+    ctx.setStrokeStyle(noteColor);
 
     const stave = new Stave(STAVE_X, STAVE_Y, STAVE_WIDTH);
     stave.addClef(clef);
@@ -51,8 +52,8 @@ export function NoteDisplay({ note, clef = 'treble' }: Props) {
     const svg = container.querySelector('svg');
     if (svg) {
       svg.querySelectorAll('path, rect, use').forEach((el) => {
-        (el as SVGElement).style.fill = NOTE_COLOR;
-        (el as SVGElement).style.stroke = NOTE_COLOR;
+        (el as SVGElement).style.fill = noteColor;
+        (el as SVGElement).style.stroke = noteColor;
       });
     }
   }, [note, clef]);
