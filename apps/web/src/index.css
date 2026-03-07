@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #18181b;
+  --color-surface: #27272a;
+  --color-text-primary: #e4e4e7;
+  --color-text-muted: #71717a;
+  --color-accent: #4ade80;
+  --color-accent-hover: #22c55e;
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+}
