@@ -13,6 +13,23 @@ export function noteHz(midi: number): number {
   return 440 * Math.pow(2, (midi - 69) / 12);
 }
 
+const NOTE_NAMES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'] as const;
+
+export function midiToLabel(midi: number): string {
+  const name = NOTE_NAMES[((midi % 12) + 12) % 12];
+  const octave = Math.floor(midi / 12) - 1;
+  return `${name}${octave}`;
+}
+
+export function hzToLabel(hz: number): string {
+  const midi = Math.round(12 * Math.log2(hz / 440) + 69);
+  return midiToLabel(midi);
+}
+
+export function hzToCents(hz: number, targetMidi: number): number {
+  return 1200 * Math.log2(hz / noteHz(targetMidi));
+}
+
 export function isNoteMatch(
   hz: number,
   targetMidi: number,
