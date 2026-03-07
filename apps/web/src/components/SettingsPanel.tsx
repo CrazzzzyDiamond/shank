@@ -3,11 +3,13 @@ import type { Note } from '@shank/music';
 export interface Settings {
   noteRange: { min: number; max: number };
   holdDuration: number;
+  theme: 'dark' | 'light';
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   noteRange: { min: 60, max: 84 }, // C4–C6
   holdDuration: 2,
+  theme: 'dark',
 };
 
 const RANGE_PRESETS = [
@@ -17,6 +19,9 @@ const RANGE_PRESETS = [
 ] as const;
 
 const DURATIONS = [1, 2, 3, 5] as const;
+
+const btnActive = 'bg-(--color-accent) text-zinc-900';
+const btnInactive = 'bg-(--color-surface-2) text-(--color-text-muted) hover:text-(--color-text-primary)';
 
 interface Props {
   settings: Settings;
@@ -45,6 +50,26 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
         </button>
       </div>
 
+      {/* Theme */}
+      <section className="flex flex-col gap-4">
+        <h3 className="text-sm font-medium uppercase tracking-widest text-(--color-text-muted)">
+          Theme
+        </h3>
+        <div className="flex gap-2">
+          {(['dark', 'light'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => onChange({ ...settings, theme: t })}
+              className={`flex-1 rounded-lg py-2 text-sm font-semibold capitalize transition-colors ${
+                settings.theme === t ? btnActive : btnInactive
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </section>
+
       {/* Note range */}
       <section className="flex flex-col gap-4">
         <h3 className="text-sm font-medium uppercase tracking-widest text-(--color-text-muted)">
@@ -57,9 +82,7 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
               key={p.label}
               onClick={() => onChange({ ...settings, noteRange: { min: p.min, max: p.max } })}
               className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${
-                isActivePreset(p.min, p.max)
-                  ? 'bg-(--color-accent) text-zinc-900'
-                  : 'bg-zinc-800 text-(--color-text-muted) hover:text-(--color-text-primary)'
+                isActivePreset(p.min, p.max) ? btnActive : btnInactive
               }`}
             >
               {p.label}
@@ -73,20 +96,13 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
             <select
               value={settings.noteRange.min}
               onChange={(e) =>
-                onChange({
-                  ...settings,
-                  noteRange: { ...settings.noteRange, min: Number(e.target.value) },
-                })
+                onChange({ ...settings, noteRange: { ...settings.noteRange, min: Number(e.target.value) } })
               }
-              className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-(--color-text-primary)"
+              className="rounded-lg border border-(--color-border) bg-(--color-surface-2) px-3 py-2 text-sm text-(--color-text-primary)"
             >
               {notes
                 .filter((n) => n.midi <= settings.noteRange.max)
-                .map((n) => (
-                  <option key={n.midi} value={n.midi}>
-                    {n.label}
-                  </option>
-                ))}
+                .map((n) => <option key={n.midi} value={n.midi}>{n.label}</option>)}
             </select>
           </div>
 
@@ -97,20 +113,13 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
             <select
               value={settings.noteRange.max}
               onChange={(e) =>
-                onChange({
-                  ...settings,
-                  noteRange: { ...settings.noteRange, max: Number(e.target.value) },
-                })
+                onChange({ ...settings, noteRange: { ...settings.noteRange, max: Number(e.target.value) } })
               }
-              className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-(--color-text-primary)"
+              className="rounded-lg border border-(--color-border) bg-(--color-surface-2) px-3 py-2 text-sm text-(--color-text-primary)"
             >
               {notes
                 .filter((n) => n.midi >= settings.noteRange.min)
-                .map((n) => (
-                  <option key={n.midi} value={n.midi}>
-                    {n.label}
-                  </option>
-                ))}
+                .map((n) => <option key={n.midi} value={n.midi}>{n.label}</option>)}
             </select>
           </div>
         </div>
@@ -121,16 +130,13 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
         <h3 className="text-sm font-medium uppercase tracking-widest text-(--color-text-muted)">
           Hold Duration
         </h3>
-
         <div className="flex gap-2">
           {DURATIONS.map((d) => (
             <button
               key={d}
               onClick={() => onChange({ ...settings, holdDuration: d })}
               className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${
-                settings.holdDuration === d
-                  ? 'bg-(--color-accent) text-zinc-900'
-                  : 'bg-zinc-800 text-(--color-text-muted) hover:text-(--color-text-primary)'
+                settings.holdDuration === d ? btnActive : btnInactive
               }`}
             >
               {d}s

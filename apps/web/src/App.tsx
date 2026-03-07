@@ -6,7 +6,17 @@ import { SettingsPanel, DEFAULT_SETTINGS } from './components/SettingsPanel';
 import type { Settings } from './components/SettingsPanel';
 import { usePitchDetector } from './hooks/usePitchDetector';
 
+const STORAGE_KEY = 'shank-settings';
 const { notes, clef, transposition } = TRUMPET;
+
+function loadSettings(): Settings {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS;
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+}
 
 interface PitchInfo {
   hz: number;
@@ -15,8 +25,18 @@ interface PitchInfo {
 }
 
 function App() {
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+  const [settings, setSettings] = useState<Settings>(loadSettings);
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  // Persist settings to localStorage
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+  }, [settings]);
+
+  // Apply theme to <html>
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', settings.theme);
+  }, [settings.theme]);
 
   const activeNotes = useMemo(
     () => notes.filter((n) => n.midi >= settings.noteRange.min && n.midi <= settings.noteRange.max),
@@ -37,7 +57,6 @@ function App() {
     holdDurationRef.current = settings.holdDuration;
   }, [settings.holdDuration]);
 
-  // When range changes, pick a new note from the new range
   useEffect(() => {
     setNote(getRandomNote(activeNotes));
     progressRef.current = 0;
@@ -55,7 +74,6 @@ function App() {
     setNote((prev) => getRandomNote(activeNotes, prev));
   }, [activeNotes]);
 
-  // Progress + pitch info animation loop
   useEffect(() => {
     if (state !== 'listening') {
       setPitchInfo(null);
@@ -88,7 +106,6 @@ function App() {
 
       if (frameCount % 4 === 0) {
         if (hz !== null) {
-          // Convert concert Hz to written pitch label (concert MIDI - transposition = written MIDI)
           const concertMidi = Math.round(12 * Math.log2(hz / 440) + 69);
           setPitchInfo({
             hz,
@@ -109,7 +126,6 @@ function App() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Main content */}
       <main className="flex flex-1 flex-col items-center justify-center gap-10 px-4">
         <div className="flex flex-col items-center gap-6">
           <p className="text-2xl font-semibold tracking-widest text-(--color-text-muted)">
@@ -117,7 +133,7 @@ function App() {
           </p>
 
           <div className="rounded-2xl bg-(--color-surface) px-6 py-4">
-            <NoteDisplay note={note} clef={clef} />
+            <NoteDisplay key={settings.theme} note={note} clef={clef} />
           </div>
 
           {state === 'listening' && (
@@ -128,7 +144,7 @@ function App() {
                 {pitchInfo ? `${pitchInfo.label} · ${Math.round(pitchInfo.hz)} Hz` : '—'}
               </p>
 
-              <div className="h-3 w-72 overflow-hidden rounded-full bg-zinc-700">
+              <div className="h-3 w-72 overflow-hidden rounded-full bg-(--color-surface-2)">
                 <div
                   className="h-full rounded-full bg-(--color-accent)"
                   style={{ width: `${progress * 100}%` }}
@@ -154,7 +170,7 @@ function App() {
             <>
               <button
                 onClick={handleNext}
-                className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-(--color-text-primary) transition-colors hover:bg-zinc-600 active:scale-95"
+                className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-(--color-text-primary) transition-colors hover:bg-(--color-surface-2) active:scale-95"
               >
                 NEXT
               </button>
@@ -169,10 +185,9 @@ function App() {
         </div>
       </main>
 
-      {/* Settings toggle button */}
       <button
         onClick={() => setSettingsOpen((o) => !o)}
-        className="fixed right-4 top-4 rounded-lg p-2 text-(--color-text-muted) transition-colors hover:bg-zinc-800 hover:text-(--color-text-primary)"
+        className="fixed right-4 top-4 rounded-lg p-2 text-(--color-text-muted) transition-colors hover:bg-(--color-surface-2) hover:text-(--color-text-primary)"
         aria-label="Toggle settings"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -181,9 +196,8 @@ function App() {
         </svg>
       </button>
 
-      {/* Settings sidebar */}
       {settingsOpen && (
-        <aside className="fixed right-0 top-0 h-full w-80 border-l border-zinc-800 bg-(--color-bg)">
+        <aside className="fixed right-0 top-0 h-full w-80 border-l border-(--color-border) bg-(--color-bg)">
           <SettingsPanel
             settings={settings}
             onChange={setSettings}
