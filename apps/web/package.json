@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@shank/music": "workspace:*",
+    "@shank/pitch": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "vexflow": "^5.0.0"
