@@ -46,6 +46,7 @@ function App() {
   const [note, setNote] = useState(() => getRandomNote(activeNotes));
   const [progress, setProgress] = useState(0);
   const [pitchInfo, setPitchInfo] = useState<PitchInfo | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const { detectedHzRef, state, errorMessage, start, stop } = usePitchDetector();
 
@@ -69,6 +70,12 @@ function App() {
     setProgress(0);
     setPitchInfo(null);
   }, [note]);
+
+  useEffect(() => {
+    if (!success) return;
+    const t = setTimeout(() => setSuccess(false), 500);
+    return () => clearTimeout(t);
+  }, [success]);
 
   const handleNext = useCallback(() => {
     setNote((prev) => getRandomNote(activeNotes, prev));
@@ -98,6 +105,7 @@ function App() {
 
       if (next >= 1) {
         next = 0;
+        setSuccess(true);
         setNote((prev) => getRandomNote(activeNotes, prev));
       }
 
@@ -128,11 +136,11 @@ function App() {
     <div className="flex min-h-screen">
       <main className="flex flex-1 flex-col items-center justify-center gap-10 px-4">
         <div className="flex flex-col items-center gap-6">
-          <p className="text-2xl font-semibold tracking-widest text-(--color-text-muted)">
+          <p className={`text-2xl font-semibold tracking-widest transition-colors duration-300 ${success ? 'text-green-400' : 'text-(--color-text-muted)'}`}>
             {note.label}
           </p>
 
-          <div className="rounded-2xl bg-(--color-surface) px-6 py-4">
+          <div className={`rounded-2xl bg-(--color-surface) px-6 py-4 ${success ? 'note-success' : ''}`}>
             <NoteDisplay key={settings.theme} note={note} clef={clef} />
           </div>
 
