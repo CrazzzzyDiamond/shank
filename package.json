@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "build:gh-pages": "NODE_ENV=production turbo build",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck"
   },

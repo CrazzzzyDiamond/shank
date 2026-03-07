@@ -74,6 +74,33 @@ pnpm dev
 pnpm build
 ```
 
+## Deployment
+
+### GitHub Pages
+
+The project is configured for automatic deployment to GitHub Pages via GitHub Actions.
+
+#### Automatic Deployment
+
+1. Push your code to the `main` branch
+2. GitHub Actions will automatically build and deploy to GitHub Pages
+3. Your site will be available at `https://yourusername.github.io/shank/`
+
+#### Manual Deployment Setup
+
+1. Go to your GitHub repository settings
+2. Navigate to "Pages" section  
+3. Under "Source", select "GitHub Actions"
+4. Push to the `main` branch to trigger deployment
+
+#### Local Build for GitHub Pages
+
+To test the production build locally:
+
+```bash
+pnpm build:gh-pages
+```
+
 ## Usage
 
 1. **Grant Microphone Access**: Allow the application to access your microphone when prompted
@@ -132,6 +159,7 @@ This project is private and not yet licensed for public use.
 
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
+- `pnpm build:gh-pages` - Build for GitHub Pages deployment
 - `pnpm lint` - Run ESLint
 - `pnpm typecheck` - Run TypeScript type checking
 
