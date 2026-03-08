@@ -47,6 +47,7 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [pitchInfo, setPitchInfo] = useState<PitchInfo | null>(null);
   const [success, setSuccess] = useState(false);
+  const [points, setPoints] = useState(0);
 
   const { detectedHzRef, state, errorMessage, start, stop } = usePitchDetector();
 
@@ -77,6 +78,10 @@ function App() {
     return () => clearTimeout(t);
   }, [success]);
 
+  useEffect(() => {
+    if (state === 'listening') setPoints(0);
+  }, [state]);
+
   const handleNext = useCallback(() => {
     setNote((prev) => getRandomNote(activeNotes, prev));
   }, [activeNotes]);
@@ -106,6 +111,7 @@ function App() {
       if (next >= 1) {
         next = 0;
         setSuccess(true);
+        setPoints((p) => p + 1);
         setNote((prev) => getRandomNote(activeNotes, prev));
       }
 
@@ -158,6 +164,11 @@ function App() {
                   style={{ width: `${progress * 100}%` }}
                 />
               </div>
+
+              <p className="text-(--color-text-muted)">
+                <span key={points} className="points-pop text-4xl font-bold text-(--color-text-primary)">{points}</span>
+                {' '}<span className="text-sm">pts</span>
+              </p>
             </div>
           )}
 
