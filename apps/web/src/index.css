@@ -36,6 +36,10 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+button {
+  cursor: pointer;
+}
+
 @keyframes note-success {
   0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); transform: scale(1); }
   40%  { box-shadow: 0 0 0 18px rgba(74, 222, 128, 0); transform: scale(1.015); }

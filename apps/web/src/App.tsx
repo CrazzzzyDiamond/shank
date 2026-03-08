@@ -205,14 +205,20 @@ function App() {
       </button>
 
       {settingsOpen && (
-        <aside className="fixed right-0 top-0 h-full w-80 border-l border-(--color-border) bg-(--color-bg)">
-          <SettingsPanel
-            settings={settings}
-            onChange={setSettings}
-            notes={notes}
-            onClose={() => setSettingsOpen(false)}
+        <>
+          <div
+            className="fixed inset-0"
+            onClick={() => setSettingsOpen(false)}
           />
-        </aside>
+          <aside className="fixed right-0 top-0 h-full w-80 border-l border-(--color-border) bg-(--color-bg)">
+            <SettingsPanel
+              settings={settings}
+              onChange={setSettings}
+              notes={notes}
+              onClose={() => setSettingsOpen(false)}
+            />
+          </aside>
+        </>
       )}
     </div>
   );
