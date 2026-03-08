@@ -193,6 +193,10 @@ function App() {
         </div>
       </main>
 
+      <span className="fixed left-4 top-4 flex items-center p-2 text-base font-bold tracking-widest text-(--color-text-primary)">
+        SHANK
+      </span>
+
       <button
         onClick={() => setSettingsOpen((o) => !o)}
         className="fixed right-4 top-4 rounded-lg p-2 text-(--color-text-muted) transition-colors hover:bg-(--color-surface-2) hover:text-(--color-text-primary)"
