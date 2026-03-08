@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { TRUMPET, getRandomNote, isNoteMatch, hzToCents, midiToLabel } from '@shank/music';
+import { TRUMPET, TRUMPET_C, TRUMPET_D, TRUMPET_EB, TROMBONE, getRandomNote, isNoteMatch, hzToCents, midiToLabel } from '@shank/music';
+import type { InstrumentConfig } from '@shank/music';
 import { NoteDisplay } from './components/NoteDisplay';
 import { CentsIndicator } from './components/CentsIndicator';
 import { CatRive } from './components/CatRive';
@@ -8,7 +9,14 @@ import type { Settings } from './components/SettingsPanel';
 import { usePitchDetector } from './hooks/usePitchDetector';
 
 const STORAGE_KEY = 'shank-settings';
-const { notes, clef, transposition } = TRUMPET;
+
+const INSTRUMENTS: Record<Settings['instrument'], InstrumentConfig> = {
+  'trumpet':    TRUMPET,
+  'trumpet-c':  TRUMPET_C,
+  'trumpet-d':  TRUMPET_D,
+  'trumpet-eb': TRUMPET_EB,
+  'trombone':   TROMBONE,
+};
 
 function loadSettings(): Settings {
   try {
@@ -29,6 +37,8 @@ function App() {
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
+  const { notes, clef, transposition } = INSTRUMENTS[settings.instrument];
+
   // Persist settings to localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
@@ -41,7 +51,7 @@ function App() {
 
   const activeNotes = useMemo(
     () => notes.filter((n) => n.midi >= settings.noteRange.min && n.midi <= settings.noteRange.max),
-    [settings.noteRange.min, settings.noteRange.max],
+    [notes, settings.noteRange.min, settings.noteRange.max],
   );
 
   const [note, setNote] = useState(() => getRandomNote(activeNotes));
@@ -53,12 +63,17 @@ function App() {
   const { detectedHzRef, state, errorMessage, start, stop } = usePitchDetector();
 
   const noteMidiRef = useRef(note.midi + transposition);
+  const transpositionRef = useRef(transposition);
   const progressRef = useRef(0);
   const holdDurationRef = useRef(settings.holdDuration);
 
   useEffect(() => {
     holdDurationRef.current = settings.holdDuration;
   }, [settings.holdDuration]);
+
+  useEffect(() => {
+    transpositionRef.current = transposition;
+  }, [transposition]);
 
   useEffect(() => {
     setNote(getRandomNote(activeNotes));
@@ -71,7 +86,7 @@ function App() {
     progressRef.current = 0;
     setProgress(0);
     setPitchInfo(null);
-  }, [note]);
+  }, [note, transposition]);
 
   useEffect(() => {
     if (!success) return;
@@ -124,7 +139,7 @@ function App() {
           const concertMidi = Math.round(12 * Math.log2(hz / 440) + 69);
           setPitchInfo({
             hz,
-            label: midiToLabel(concertMidi - transposition),
+            label: midiToLabel(concertMidi - transpositionRef.current),
             cents: hzToCents(hz, noteMidiRef.current),
           });
         } else {

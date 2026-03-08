@@ -1,26 +1,51 @@
 import type { Note } from '@shank/music';
 
+export type InstrumentId = 'trumpet' | 'trumpet-c' | 'trumpet-d' | 'trumpet-eb' | 'trombone';
+
 export interface Settings {
+  instrument: InstrumentId;
   noteRange: { min: number; max: number };
   holdDuration: number;
   theme: 'dark' | 'light';
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  noteRange: { min: 60, max: 84 }, // C4–C6
+  instrument: 'trumpet',
+  noteRange: { min: 60, max: 84 },
   holdDuration: 2,
   theme: 'dark',
 };
 
-const RANGE_PRESETS = [
-  { label: 'Low', min: 60, max: 71 },  // C4–B4
-  { label: 'Mid', min: 72, max: 83 },  // C5–B5
-  { label: 'Full', min: 60, max: 84 }, // C4–C6
-] as const;
+export const RANGE_PRESETS: Record<InstrumentId, { label: string; min: number; max: number }[]> = {
+  'trumpet':    [{ label: 'Low', min: 60, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 60, max: 84 }],
+  'trumpet-c':  [{ label: 'Low', min: 60, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 60, max: 84 }],
+  'trumpet-d':  [{ label: 'Low', min: 60, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 60, max: 84 }],
+  'trumpet-eb': [{ label: 'Low', min: 60, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 60, max: 84 }],
+  'trombone':   [{ label: 'Low', min: 40, max: 59 }, { label: 'Mid', min: 48, max: 67 }, { label: 'Full', min: 40, max: 70 }],
+};
+
+export const DEFAULT_RANGES: Record<InstrumentId, { min: number; max: number }> = {
+  'trumpet':    { min: 60, max: 84 },
+  'trumpet-c':  { min: 60, max: 84 },
+  'trumpet-d':  { min: 60, max: 84 },
+  'trumpet-eb': { min: 60, max: 84 },
+  'trombone':   { min: 46, max: 70 },
+};
+
+const TRUMPET_GROUP: { id: InstrumentId; label: string }[] = [
+  { id: 'trumpet',    label: 'Bb' },
+  { id: 'trumpet-c',  label: 'C'  },
+  { id: 'trumpet-d',  label: 'D'  },
+  { id: 'trumpet-eb', label: 'Eb' },
+];
+
+const TROMBONE_GROUP: { id: InstrumentId; label: string }[] = [
+  { id: 'trombone', label: 'Tenor' },
+];
 
 const DURATIONS = [1, 2, 3, 5] as const;
 
-const btnActive = 'bg-(--color-accent) text-zinc-900';
+const btnActive   = 'bg-(--color-accent) text-zinc-900';
 const btnInactive = 'bg-(--color-surface-2) text-amber-400 hover:text-amber-100';
 
 interface Props {
@@ -33,6 +58,8 @@ interface Props {
 export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
   const isActivePreset = (min: number, max: number) =>
     settings.noteRange.min === min && settings.noteRange.max === max;
+
+  const rangePresets = RANGE_PRESETS[settings.instrument];
 
   return (
     <div className="flex h-full flex-col gap-8 overflow-y-auto p-6">
@@ -49,6 +76,43 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
           </svg>
         </button>
       </div>
+
+      {/* Instrument */}
+      <section className="flex flex-col gap-3">
+        <h3 className="text-sm font-medium uppercase tracking-widest text-(--color-text-muted)">
+          Instrument
+        </h3>
+        <div className="flex flex-col gap-2">
+          <p className="text-xs text-(--color-text-muted)">Trumpet</p>
+          <div className="flex gap-1.5">
+            {TRUMPET_GROUP.map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => onChange({ ...settings, instrument: id, noteRange: DEFAULT_RANGES[id] })}
+                className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${
+                  settings.instrument === id ? btnActive : btnInactive
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-(--color-text-muted)">Trombone</p>
+          <div className="flex gap-1.5">
+            {TROMBONE_GROUP.map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => onChange({ ...settings, instrument: id, noteRange: DEFAULT_RANGES[id] })}
+                className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${
+                  settings.instrument === id ? btnActive : btnInactive
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Theme */}
       <section className="flex flex-col gap-4">
@@ -77,7 +141,7 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
         </h3>
 
         <div className="flex gap-2">
-          {RANGE_PRESETS.map((p) => (
+          {rangePresets.map((p) => (
             <button
               key={p.label}
               onClick={() => onChange({ ...settings, noteRange: { min: p.min, max: p.max } })}

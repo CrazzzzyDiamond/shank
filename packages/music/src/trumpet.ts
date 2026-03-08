@@ -30,10 +30,38 @@ const TRUMPET_NOTES: Note[] = [
   { key: 'c/6',  label: 'C6',  midi: 84 },
 ];
 
+// Bb trumpet — sounds M2 lower than written
 export const TRUMPET: InstrumentConfig = {
   id: 'trumpet',
   name: 'Trumpet (Bb)',
   clef: 'treble',
   transposition: -2,
+  notes: TRUMPET_NOTES,
+};
+
+// C trumpet — concert pitch, no transposition
+export const TRUMPET_C: InstrumentConfig = {
+  id: 'trumpet-c',
+  name: 'Trumpet (C)',
+  clef: 'treble',
+  transposition: 0,
+  notes: TRUMPET_NOTES,
+};
+
+// D trumpet — sounds M2 higher than written
+export const TRUMPET_D: InstrumentConfig = {
+  id: 'trumpet-d',
+  name: 'Trumpet (D)',
+  clef: 'treble',
+  transposition: 2,
+  notes: TRUMPET_NOTES,
+};
+
+// Eb trumpet — sounds m3 higher than written
+export const TRUMPET_EB: InstrumentConfig = {
+  id: 'trumpet-eb',
+  name: 'Trumpet (Eb)',
+  clef: 'treble',
+  transposition: 3,
   notes: TRUMPET_NOTES,
 };
