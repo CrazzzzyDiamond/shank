@@ -25,11 +25,11 @@ export const RANGE_PRESETS: Record<InstrumentId, { label: string; min: number; m
 };
 
 export const DEFAULT_RANGES: Record<InstrumentId, { min: number; max: number }> = {
-  'trumpet':    { min: 60, max: 84 },
-  'trumpet-c':  { min: 60, max: 84 },
-  'trumpet-d':  { min: 60, max: 84 },
-  'trumpet-eb': { min: 60, max: 84 },
-  'trombone':   { min: 46, max: 70 },
+  'trumpet':    { min: 72, max: 83 }, // Mid
+  'trumpet-c':  { min: 72, max: 83 },
+  'trumpet-d':  { min: 72, max: 83 },
+  'trumpet-eb': { min: 72, max: 83 },
+  'trombone':   { min: 48, max: 67 }, // Mid
 };
 
 const TRUMPET_GROUP: { id: InstrumentId; label: string }[] = [
