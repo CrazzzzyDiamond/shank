@@ -10,7 +10,7 @@ interface Props {
 
 export function CatRive({ cents, success }: Props) {
   const { rive, RiveComponent } = useRive({
-    src: '/3613-7557-wake-up-the-black-cat.riv',
+    src: `${import.meta.env.BASE_URL}3613-7557-wake-up-the-black-cat.riv`,
     stateMachines: STATE_MACHINE,
     autoplay: true,
   });
