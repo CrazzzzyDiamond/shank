@@ -114,7 +114,7 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
         </div>
       </section>
 
-      {/* Theme */}
+      {/* Theme — тимчасово прихована
       <section className="flex flex-col gap-4">
         <h3 className="text-sm font-medium uppercase tracking-widest text-(--color-text-muted)">
           Theme
@@ -133,6 +133,7 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
           ))}
         </div>
       </section>
+      */}
 
       {/* Note range */}
       <section className="flex flex-col gap-4">

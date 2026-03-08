@@ -16,7 +16,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-[data-theme="light"] {
+/* [data-theme="light"] {
   --color-bg: #f4f4f5;
   --color-surface: #ffffff;
   --color-surface-2: #e4e4e7;
@@ -26,7 +26,7 @@
   --color-accent: #16a34a;
   --color-accent-hover: #15803d;
   --color-note: #18181b;
-}
+} */
 
 body {
   margin: 0;
