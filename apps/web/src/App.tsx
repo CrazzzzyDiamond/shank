@@ -145,7 +145,7 @@ function App() {
           </div>
 
           {state === 'listening' && (
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex w-82 flex-col items-center gap-3">
               <CentsIndicator cents={pitchInfo?.cents ?? 0} />
 
               <p className="h-5 text-sm text-(--color-text-muted)">

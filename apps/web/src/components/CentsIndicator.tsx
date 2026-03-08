@@ -20,19 +20,18 @@ interface Props {
   tolerance?: number;
 }
 
-export function CentsIndicator({ cents, tolerance = 50 }: Props) {
+export function CentsIndicator({ cents, tolerance = 100 }: Props) {
   const clamped = Math.max(-tolerance, Math.min(tolerance, cents));
   const needleAngle = (clamped / tolerance) * MAX_DEG;
   const zoneAngle = (ZONE_CENTS / tolerance) * MAX_DEG;
   const inTune = Math.abs(cents) <= ZONE_CENTS;
 
-  const ticks = [-tolerance, -tolerance / 2, 0, tolerance / 2, tolerance];
+  const ticks = [-100, -50, 0, 50, 100];
 
   return (
     <svg
       viewBox="-110 -100 220 130"
-      width="260"
-      height="154"
+      width="100%"
       aria-label={`Tuner: ${Math.round(cents)} cents`}
     >
       {/* Background arc */}
