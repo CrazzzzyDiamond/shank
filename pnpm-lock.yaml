@@ -17,6 +17,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@rive-app/react-canvas':
+        specifier: ^4.27.0
+        version: 4.27.0(react@19.2.4)
       '@shank/music':
         specifier: workspace:*
         version: link:../../packages/music
@@ -390,6 +393,14 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@rive-app/canvas@2.35.0':
+    resolution: {integrity: sha512-aBFgoM11X/YgpSKZDxOvt3P9EZz8siJ+AZ5aevwaiLwu9K1nHSumXDCdmJPp+9FWhW9Ssk9Le14BptnlCR1m7w==}
+
+  '@rive-app/react-canvas@4.27.0':
+    resolution: {integrity: sha512-3Mprp0sSe9KgRsMpvBhPgBVj2ZIHDTgQTGGvncsozAVkH1imF6Rl5VMNT/+7WWKRIXebpeLLSEGJ6RCegugEmw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0
 
   '@rolldown/pluginutils@1.0.0-rc.3':
     resolution: {integrity: sha512-eybk3TjzzzV97Dlj5c+XrBFW57eTNhzod66y9HrBlzJ6NsCrWCp/2kaPS3K9wJmurBC0Tdw4yPjXKZqlznim3Q==}
@@ -1638,6 +1649,13 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@rive-app/canvas@2.35.0': {}
+
+  '@rive-app/react-canvas@4.27.0(react@19.2.4)':
+    dependencies:
+      '@rive-app/canvas': 2.35.0
+      react: 19.2.4
 
   '@rolldown/pluginutils@1.0.0-rc.3': {}
 

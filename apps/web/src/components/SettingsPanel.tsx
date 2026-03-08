@@ -21,7 +21,7 @@ const RANGE_PRESETS = [
 const DURATIONS = [1, 2, 3, 5] as const;
 
 const btnActive = 'bg-(--color-accent) text-zinc-900';
-const btnInactive = 'bg-(--color-surface-2) text-(--color-text-muted) hover:text-(--color-text-primary)';
+const btnInactive = 'bg-(--color-surface-2) text-amber-400 hover:text-amber-100';
 
 interface Props {
   settings: Settings;
@@ -98,7 +98,7 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
               onChange={(e) =>
                 onChange({ ...settings, noteRange: { ...settings.noteRange, min: Number(e.target.value) } })
               }
-              className="rounded-lg border border-(--color-border) bg-(--color-surface-2) px-3 py-2 text-sm text-(--color-text-primary)"
+              className="rounded-lg border border-(--color-border) bg-(--color-surface-2) px-3 py-2 text-sm text-amber-100"
             >
               {notes
                 .filter((n) => n.midi <= settings.noteRange.max)
@@ -115,7 +115,7 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
               onChange={(e) =>
                 onChange({ ...settings, noteRange: { ...settings.noteRange, max: Number(e.target.value) } })
               }
-              className="rounded-lg border border-(--color-border) bg-(--color-surface-2) px-3 py-2 text-sm text-(--color-text-primary)"
+              className="rounded-lg border border-(--color-border) bg-(--color-surface-2) px-3 py-2 text-sm text-amber-100"
             >
               {notes
                 .filter((n) => n.midi >= settings.noteRange.min)

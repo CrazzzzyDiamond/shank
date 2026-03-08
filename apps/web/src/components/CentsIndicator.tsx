@@ -38,19 +38,20 @@ export function CentsIndicator({ cents, tolerance = 100 }: Props) {
       <path
         d={arc(-MAX_DEG, MAX_DEG, R)}
         fill="none"
-        stroke="#3f3f46"
+        stroke="#1c0d02"
         strokeWidth="8"
         strokeLinecap="round"
+        opacity="0.25"
       />
 
       {/* In-tune zone */}
       <path
         d={arc(-zoneAngle, zoneAngle, R)}
         fill="none"
-        stroke="#4ade80"
+        stroke="#15803d"
         strokeWidth="8"
         strokeLinecap="round"
-        opacity="0.35"
+        opacity="0.45"
       />
 
       {/* Tick marks */}
@@ -62,14 +63,14 @@ export function CentsIndicator({ cents, tolerance = 100 }: Props) {
         const label = c === 0 ? '0' : c > 0 ? `+${c}` : `${c}`;
         return (
           <g key={c}>
-            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#52525b" strokeWidth={c === 0 ? 2 : 1} />
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#1c0d02" strokeWidth={c === 0 ? 2 : 1} opacity="0.4" />
             <text
               x={lx}
               y={ly}
               textAnchor="middle"
               dominantBaseline="middle"
               fontSize="9"
-              fill="#71717a"
+              fill="#7a5210"
             >
               {label}
             </text>
@@ -90,14 +91,14 @@ export function CentsIndicator({ cents, tolerance = 100 }: Props) {
           y1="8"
           x2="0"
           y2={-NEEDLE_R}
-          stroke={inTune ? '#4ade80' : '#e4e4e7'}
-          strokeWidth="2"
+          stroke={inTune ? '#15803d' : '#1c0d02'}
+          strokeWidth="2.5"
           strokeLinecap="round"
         />
       </g>
 
       {/* Center pivot */}
-      <circle cx="0" cy="0" r="5" fill={inTune ? '#4ade80' : '#71717a'} />
+      <circle cx="0" cy="0" r="5" fill={inTune ? '#15803d' : '#1c0d02'} />
 
       {/* Status text */}
       <text
@@ -105,7 +106,7 @@ export function CentsIndicator({ cents, tolerance = 100 }: Props) {
         y="20"
         textAnchor="middle"
         fontSize="11"
-        fill={inTune ? '#4ade80' : '#71717a'}
+        fill={inTune ? '#15803d' : '#7a5210'}
         fontWeight="600"
         letterSpacing="1"
       >

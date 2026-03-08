@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TRUMPET, getRandomNote, isNoteMatch, hzToCents, midiToLabel } from '@shank/music';
 import { NoteDisplay } from './components/NoteDisplay';
 import { CentsIndicator } from './components/CentsIndicator';
+import { CatRive } from './components/CatRive';
 import { SettingsPanel, DEFAULT_SETTINGS } from './components/SettingsPanel';
 import type { Settings } from './components/SettingsPanel';
 import { usePitchDetector } from './hooks/usePitchDetector';
@@ -138,6 +139,7 @@ function App() {
     return () => cancelAnimationFrame(rafId);
   }, [state, detectedHzRef, activeNotes]);
 
+
   return (
     <div className="flex min-h-screen">
       <main className="flex flex-1 flex-col items-center justify-center gap-10 px-4">
@@ -181,7 +183,7 @@ function App() {
           {state === 'idle' || state === 'error' ? (
             <button
               onClick={start}
-              className="w-72 rounded-2xl bg-(--color-accent) py-5 text-xl font-bold tracking-widest text-zinc-900 transition-colors hover:bg-(--color-accent-hover) active:scale-95"
+              className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-amber-100 transition-colors hover:bg-(--color-surface-2) active:scale-95"
             >
               START
             </button>
@@ -189,7 +191,7 @@ function App() {
             <>
               <button
                 onClick={handleNext}
-                className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-(--color-text-primary) transition-colors hover:bg-(--color-surface-2) active:scale-95"
+                className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-amber-100 transition-colors hover:bg-(--color-surface-2) active:scale-95"
               >
                 NEXT
               </button>
@@ -210,7 +212,7 @@ function App() {
 
       <button
         onClick={() => setSettingsOpen((o) => !o)}
-        className="fixed right-4 top-4 rounded-lg p-2 text-(--color-text-muted) transition-colors hover:bg-(--color-surface-2) hover:text-(--color-text-primary)"
+        className="fixed right-4 top-4 rounded-lg p-2 text-(--color-text-muted) transition-colors hover:bg-(--color-surface) hover:text-amber-100"
         aria-label="Toggle settings"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -218,6 +220,10 @@ function App() {
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
         </svg>
       </button>
+
+      <div className="fixed bottom-0 left-0">
+        <CatRive cents={pitchInfo?.cents ?? null} success={success} />
+      </div>
 
       {settingsOpen && (
         <>
