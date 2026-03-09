@@ -1,6 +1,7 @@
 export type { Note, InstrumentConfig } from './types.ts';
-export { TRUMPET, TRUMPET_C, TRUMPET_D, TRUMPET_EB } from './trumpet';
+export { TRUMPET, TRUMPET_C, TRUMPET_D, TRUMPET_EB, TRUMPET_NATURAL } from './trumpet';
 export { TROMBONE } from './trombone';
+export { SAX_SOPRANO, SAX_ALTO, SAX_TENOR, SAX_BARI } from './saxophone';
 
 export function getRandomNote<T extends { midi: number }>(
   notes: T[],

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { TRUMPET, TRUMPET_C, TRUMPET_D, TRUMPET_EB, TROMBONE, getRandomNote, isNoteMatch, hzToCents, midiToLabel } from '@shank/music';
+import { TRUMPET, TRUMPET_C, TRUMPET_D, TRUMPET_EB, TRUMPET_NATURAL, TROMBONE, SAX_SOPRANO, SAX_ALTO, SAX_TENOR, SAX_BARI, getRandomNote, isNoteMatch, hzToCents, midiToLabel } from '@shank/music';
 import type { InstrumentConfig } from '@shank/music';
 import { NoteDisplay } from './components/NoteDisplay';
 import { CentsIndicator } from './components/CentsIndicator';
@@ -11,11 +11,16 @@ import { usePitchDetector } from './hooks/usePitchDetector';
 const STORAGE_KEY = 'shank-settings';
 
 const INSTRUMENTS: Record<Settings['instrument'], InstrumentConfig> = {
-  'trumpet':    TRUMPET,
-  'trumpet-c':  TRUMPET_C,
-  'trumpet-d':  TRUMPET_D,
-  'trumpet-eb': TRUMPET_EB,
-  'trombone':   TROMBONE,
+  'trumpet':         TRUMPET,
+  'trumpet-c':       TRUMPET_C,
+  'trumpet-d':       TRUMPET_D,
+  'trumpet-eb':      TRUMPET_EB,
+  'trumpet-natural': TRUMPET_NATURAL,
+  'trombone':        TROMBONE,
+  'sax-soprano':     SAX_SOPRANO,
+  'sax-alto':        SAX_ALTO,
+  'sax-tenor':       SAX_TENOR,
+  'sax-bari':        SAX_BARI,
 };
 
 function loadSettings(): Settings {
