@@ -240,22 +240,23 @@ function App() {
         <CatRive cents={pitchInfo?.cents ?? null} success={success} />
       </div>
 
-      {settingsOpen && (
-        <>
-          <div
-            className="fixed inset-0"
-            onClick={() => setSettingsOpen(false)}
+      <>
+        <div
+          className={`fixed inset-0 transition-opacity duration-300 ${settingsOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}`}
+          onClick={() => setSettingsOpen(false)}
+        />
+        <aside
+          style={{ transform: settingsOpen ? 'translateX(0)' : 'translateX(100%)', transition: 'transform 200ms ease-in-out' }}
+          className="fixed right-0 top-0 h-full w-80 border-l border-(--color-border) bg-(--color-bg)"
+        >
+          <SettingsPanel
+            settings={settings}
+            onChange={setSettings}
+            notes={notes}
+            onClose={() => setSettingsOpen(false)}
           />
-          <aside className="fixed right-0 top-0 h-full w-80 border-l border-(--color-border) bg-(--color-bg)">
-            <SettingsPanel
-              settings={settings}
-              onChange={setSettings}
-              notes={notes}
-              onClose={() => setSettingsOpen(false)}
-            />
-          </aside>
-        </>
-      )}
+        </aside>
+      </>
     </div>
   );
 }
