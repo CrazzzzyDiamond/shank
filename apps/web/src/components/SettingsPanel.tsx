@@ -1,6 +1,9 @@
 import type { Note } from '@shank/music';
 
-export type InstrumentId = 'trumpet' | 'trumpet-c' | 'trumpet-d' | 'trumpet-eb' | 'trombone';
+export type InstrumentId =
+  | 'trumpet' | 'trumpet-c' | 'trumpet-d' | 'trumpet-eb' | 'trumpet-natural'
+  | 'trombone'
+  | 'sax-soprano' | 'sax-alto' | 'sax-tenor' | 'sax-bari';
 
 export interface Settings {
   instrument: InstrumentId;
@@ -16,20 +19,33 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'dark',
 };
 
+const TRUMPET_PRESETS = [{ label: 'Low', min: 54, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 54, max: 84 }];
+const SAX_PRESETS     = [{ label: 'Low', min: 58, max: 70 }, { label: 'Mid', min: 60, max: 84 }, { label: 'Full', min: 58, max: 89 }];
+
 export const RANGE_PRESETS: Record<InstrumentId, { label: string; min: number; max: number }[]> = {
-  'trumpet':    [{ label: 'Low', min: 60, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 60, max: 84 }],
-  'trumpet-c':  [{ label: 'Low', min: 60, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 60, max: 84 }],
-  'trumpet-d':  [{ label: 'Low', min: 60, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 60, max: 84 }],
-  'trumpet-eb': [{ label: 'Low', min: 60, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 60, max: 84 }],
-  'trombone':   [{ label: 'Low', min: 40, max: 59 }, { label: 'Mid', min: 48, max: 67 }, { label: 'Full', min: 40, max: 70 }],
+  'trumpet':          TRUMPET_PRESETS,
+  'trumpet-c':        TRUMPET_PRESETS,
+  'trumpet-d':        TRUMPET_PRESETS,
+  'trumpet-eb':       TRUMPET_PRESETS,
+  'trumpet-natural':  [{ label: 'Low', min: 58, max: 70 }, { label: 'Mid', min: 70, max: 82 }, { label: 'Full', min: 58, max: 84 }],
+  'trombone':         [{ label: 'Low', min: 40, max: 59 }, { label: 'Mid', min: 48, max: 67 }, { label: 'Full', min: 40, max: 70 }],
+  'sax-soprano':      SAX_PRESETS,
+  'sax-alto':         SAX_PRESETS,
+  'sax-tenor':        SAX_PRESETS,
+  'sax-bari':         SAX_PRESETS,
 };
 
 export const DEFAULT_RANGES: Record<InstrumentId, { min: number; max: number }> = {
-  'trumpet':    { min: 72, max: 83 }, // Mid
-  'trumpet-c':  { min: 72, max: 83 },
-  'trumpet-d':  { min: 72, max: 83 },
-  'trumpet-eb': { min: 72, max: 83 },
-  'trombone':   { min: 48, max: 67 }, // Mid
+  'trumpet':          { min: 72, max: 83 },
+  'trumpet-c':        { min: 72, max: 83 },
+  'trumpet-d':        { min: 72, max: 83 },
+  'trumpet-eb':       { min: 72, max: 83 },
+  'trumpet-natural':  { min: 70, max: 82 },
+  'trombone':         { min: 48, max: 67 },
+  'sax-soprano':      { min: 60, max: 84 },
+  'sax-alto':         { min: 60, max: 84 },
+  'sax-tenor':        { min: 60, max: 84 },
+  'sax-bari':         { min: 60, max: 84 },
 };
 
 const TRUMPET_GROUP: { id: InstrumentId; label: string }[] = [
@@ -41,6 +57,13 @@ const TRUMPET_GROUP: { id: InstrumentId; label: string }[] = [
 
 const TROMBONE_GROUP: { id: InstrumentId; label: string }[] = [
   { id: 'trombone', label: 'Tenor' },
+];
+
+const SAX_GROUP: { id: InstrumentId; label: string }[] = [
+  { id: 'sax-soprano', label: 'Soprano' },
+  { id: 'sax-alto',    label: 'Alto'    },
+  { id: 'sax-tenor',   label: 'Tenor'   },
+  { id: 'sax-bari',    label: 'Bari'    },
 ];
 
 const DURATIONS = [1, 2, 3, 5] as const;
@@ -97,6 +120,20 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
               </button>
             ))}
           </div>
+          <p className="text-xs text-(--color-text-muted)">Saxophone</p>
+          <div className="flex gap-1.5">
+            {SAX_GROUP.map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => onChange({ ...settings, instrument: id, noteRange: DEFAULT_RANGES[id] })}
+                className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${
+                  settings.instrument === id ? btnActive : btnInactive
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
           <p className="text-xs text-(--color-text-muted)">Trombone</p>
           <div className="flex gap-1.5">
             {TROMBONE_GROUP.map(({ id, label }) => (
@@ -110,6 +147,17 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
                 {label}
               </button>
             ))}
+          </div>
+          <p className="text-xs text-(--color-text-muted)">Natural</p>
+          <div className="flex gap-1.5">
+            <button
+              onClick={() => onChange({ ...settings, instrument: 'trumpet-natural', noteRange: DEFAULT_RANGES['trumpet-natural'] })}
+              className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${
+                settings.instrument === 'trumpet-natural' ? btnActive : btnInactive
+              }`}
+            >
+              Natural
+            </button>
           </div>
         </div>
       </section>

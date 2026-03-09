@@ -1,8 +1,15 @@
 import type { InstrumentConfig, Note } from './types.ts';
 
-// Written pitch for Bb trumpet, range C4–C6 (chromatic)
+// Written pitch for Bb trumpet, range F#3–C6 (chromatic)
+// F#3 is the lowest practical note (all 3 valves down)
 // Flats used for all accidentals except F# (standard brass convention)
 const TRUMPET_NOTES: Note[] = [
+  { key: 'f#/3', label: 'F#3', midi: 54, accidental: '#' },
+  { key: 'g/3',  label: 'G3',  midi: 55 },
+  { key: 'ab/3', label: 'Ab3', midi: 56, accidental: 'b' },
+  { key: 'a/3',  label: 'A3',  midi: 57 },
+  { key: 'bb/3', label: 'Bb3', midi: 58, accidental: 'b' },
+  { key: 'b/3',  label: 'B3',  midi: 59 },
   { key: 'c/4',  label: 'C4',  midi: 60 },
   { key: 'db/4', label: 'Db4', midi: 61, accidental: 'b' },
   { key: 'd/4',  label: 'D4',  midi: 62 },
@@ -64,4 +71,25 @@ export const TRUMPET_EB: InstrumentConfig = {
   clef: 'treble',
   transposition: 3,
   notes: TRUMPET_NOTES,
+};
+
+// Natural Bb trumpet — only natural harmonic series notes (written pitch)
+// Partials: 2=Bb3, 3=F4, 4=Bb4, 5=D5, 6=F5, 7=Ab5, 8=Bb5, 9=C6
+const TRUMPET_NATURAL_NOTES: Note[] = [
+  { key: 'bb/3', label: 'Bb3', midi: 58, accidental: 'b' },
+  { key: 'f/4',  label: 'F4',  midi: 65 },
+  { key: 'bb/4', label: 'Bb4', midi: 70, accidental: 'b' },
+  { key: 'd/5',  label: 'D5',  midi: 74 },
+  { key: 'f/5',  label: 'F5',  midi: 77 },
+  { key: 'ab/5', label: 'Ab5', midi: 79, accidental: 'b' },
+  { key: 'bb/5', label: 'Bb5', midi: 82, accidental: 'b' },
+  { key: 'c/6',  label: 'C6',  midi: 84 },
+];
+
+export const TRUMPET_NATURAL: InstrumentConfig = {
+  id: 'trumpet-natural',
+  name: 'Trumpet (Natural)',
+  clef: 'treble',
+  transposition: -2,
+  notes: TRUMPET_NATURAL_NOTES,
 };
