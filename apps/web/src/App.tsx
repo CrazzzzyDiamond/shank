@@ -64,6 +64,7 @@ function App() {
   const [pitchInfo, setPitchInfo] = useState<PitchInfo | null>(null);
   const [success, setSuccess] = useState(false);
   const [points, setPoints] = useState(0);
+  const [flashPoints, setFlashPoints] = useState(false);
 
   const { detectedHzRef, state, errorMessage, start, stop } = usePitchDetector();
 
@@ -79,6 +80,7 @@ function App() {
   useEffect(() => {
     transpositionRef.current = transposition;
   }, [transposition]);
+
 
   useEffect(() => {
     setNote(getRandomNote(activeNotes));
@@ -133,6 +135,7 @@ function App() {
         next = 0;
         setSuccess(true);
         setPoints((p) => p + 1);
+        setFlashPoints(true);
         setNote((prev) => getRandomNote(activeNotes, prev));
       }
 
@@ -188,7 +191,7 @@ function App() {
               </div>
 
               <p className="text-(--color-text-muted)">
-                <span key={points} className="points-pop text-4xl font-bold text-(--color-text-primary)">{points}</span>
+                <span className={`${flashPoints ? 'points-pop ' : ''}text-4xl font-bold text-(--color-text-primary)`} onAnimationEnd={() => setFlashPoints(false)}>{points}</span>
                 {' '}<span className="text-sm">pts</span>
               </p>
             </div>
