@@ -8,6 +8,8 @@ import { SettingsPanel, DEFAULT_SETTINGS } from './components/SettingsPanel';
 import type { Settings } from './components/SettingsPanel';
 import { usePitchDetector } from './hooks/usePitchDetector';
 
+declare function gtag(...args: unknown[]): void;
+
 const STORAGE_KEY = 'shank-settings';
 
 const INSTRUMENTS: Record<Settings['instrument'], InstrumentConfig> = {
@@ -72,6 +74,10 @@ function App() {
   const transpositionRef = useRef(transposition);
   const progressRef = useRef(0);
   const holdDurationRef = useRef(settings.holdDuration);
+  const sessionStartRef = useRef(0);
+  const pointsRef = useRef(0);
+  const instrumentRef = useRef(settings.instrument);
+  const noteLabelRef = useRef(note.label);
 
   useEffect(() => {
     holdDurationRef.current = settings.holdDuration;
@@ -105,6 +111,32 @@ function App() {
     if (state === 'listening') setPoints(0);
   }, [state]);
 
+  useEffect(() => { pointsRef.current = points; }, [points]);
+  useEffect(() => { instrumentRef.current = settings.instrument; }, [settings.instrument]);
+  useEffect(() => { noteLabelRef.current = note.label; }, [note.label]);
+
+  const prevInstrumentRef = useRef(settings.instrument);
+  useEffect(() => {
+    if (prevInstrumentRef.current === settings.instrument) return;
+    prevInstrumentRef.current = settings.instrument;
+    gtag('event', 'instrument_changed', { instrument: settings.instrument });
+  }, [settings.instrument]);
+
+  const handleStart = useCallback(() => {
+    sessionStartRef.current = performance.now();
+    gtag('event', 'session_start', { instrument: settings.instrument });
+    start(settings.micDeviceId || undefined);
+  }, [start, settings.instrument, settings.micDeviceId]);
+
+  const handleStop = useCallback(() => {
+    gtag('event', 'session_end', {
+      instrument: settings.instrument,
+      points: pointsRef.current,
+      duration_seconds: Math.round((performance.now() - sessionStartRef.current) / 1000),
+    });
+    stop();
+  }, [stop, settings.instrument]);
+
   const handleNext = useCallback(() => {
     setNote((prev) => getRandomNote(activeNotes, prev));
   }, [activeNotes]);
@@ -136,6 +168,7 @@ function App() {
         setSuccess(true);
         setPoints((p) => p + 1);
         setFlashPoints(true);
+        gtag('event', 'note_scored', { instrument: instrumentRef.current, note: noteLabelRef.current });
         setNote((prev) => getRandomNote(activeNotes, prev));
       }
 
@@ -205,7 +238,7 @@ function App() {
         <div className="flex flex-col items-center gap-4">
           {state === 'idle' || state === 'error' ? (
             <button
-              onClick={() => start(settings.micDeviceId || undefined)}
+              onClick={handleStart}
               className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-amber-100 transition-colors hover:bg-(--color-surface-2) active:scale-95"
             >
               START
@@ -219,7 +252,7 @@ function App() {
                 NEXT
               </button>
               <button
-                onClick={stop}
+                onClick={handleStop}
                 className="text-sm text-(--color-text-muted) transition-colors hover:text-(--color-text-primary)"
               >
                 stop
