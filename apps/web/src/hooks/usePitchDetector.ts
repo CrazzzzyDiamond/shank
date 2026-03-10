@@ -9,7 +9,7 @@ export interface UsePitchDetectorReturn {
   detectedHzRef: React.RefObject<number | null>;
   state: ListeningState;
   errorMessage: string | null;
-  start: () => Promise<void>;
+  start: (deviceId?: string) => Promise<void>;
   stop: () => void;
 }
 
@@ -38,9 +38,10 @@ export function usePitchDetector(): UsePitchDetectorReturn {
     setState('idle');
   }, []);
 
-  const start = useCallback(async () => {
+  const start = useCallback(async (deviceId?: string) => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      const audio = deviceId ? { deviceId: { exact: deviceId } } : true;
+      const stream = await navigator.mediaDevices.getUserMedia({ audio, video: false });
       streamRef.current = stream;
 
       const audioCtx = new AudioContext();
