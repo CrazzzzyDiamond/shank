@@ -205,7 +205,7 @@ function App() {
         <div className="flex flex-col items-center gap-4">
           {state === 'idle' || state === 'error' ? (
             <button
-              onClick={start}
+              onClick={() => start(settings.micDeviceId || undefined)}
               className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-amber-100 transition-colors hover:bg-(--color-surface-2) active:scale-95"
             >
               START

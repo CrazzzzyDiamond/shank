@@ -1,4 +1,5 @@
 import type { Note } from '@shank/music';
+import { useEffect, useState } from 'react';
 
 export type InstrumentId =
   | 'trumpet' | 'trumpet-c' | 'trumpet-d' | 'trumpet-eb' | 'trumpet-natural'
@@ -10,6 +11,7 @@ export interface Settings {
   noteRange: { min: number; max: number };
   holdDuration: number;
   theme: 'dark' | 'light';
+  micDeviceId: string;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -17,6 +19,7 @@ export const DEFAULT_SETTINGS: Settings = {
   noteRange: { min: 60, max: 84 },
   holdDuration: 2,
   theme: 'dark',
+  micDeviceId: '',
 };
 
 const TRUMPET_PRESETS = [{ label: 'Low', min: 54, max: 71 }, { label: 'Mid', min: 72, max: 83 }, { label: 'Full', min: 54, max: 84 }];
@@ -83,6 +86,14 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
     settings.noteRange.min === min && settings.noteRange.max === max;
 
   const rangePresets = RANGE_PRESETS[settings.instrument];
+
+  const [micDevices, setMicDevices] = useState<MediaDeviceInfo[]>([]);
+
+  useEffect(() => {
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+      setMicDevices(devices.filter((d) => d.kind === 'audioinput'));
+    });
+  }, []);
 
   return (
     <div className="flex h-full flex-col gap-8 overflow-y-auto p-6">
@@ -239,6 +250,26 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
       </section>
 
       {/* Hold duration */}
+      {micDevices.length > 1 && (
+        <section className="flex flex-col gap-3">
+          <h3 className="text-sm font-medium uppercase tracking-widest text-(--color-text-muted)">
+            Microphone
+          </h3>
+          <select
+            value={settings.micDeviceId}
+            onChange={(e) => onChange({ ...settings, micDeviceId: e.target.value })}
+            className="rounded-lg border border-(--color-border) bg-(--color-surface-2) px-3 py-2 text-sm text-amber-100"
+          >
+            <option value="">Default</option>
+            {micDevices.map((d) => (
+              <option key={d.deviceId} value={d.deviceId}>
+                {d.label || d.deviceId}
+              </option>
+            ))}
+          </select>
+        </section>
+      )}
+
       <section className="flex flex-col gap-4">
         <h3 className="text-sm font-medium uppercase tracking-widest text-(--color-text-muted)">
           Hold Duration
