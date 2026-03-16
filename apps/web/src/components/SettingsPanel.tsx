@@ -2,7 +2,7 @@ import type { Note } from '@shank/music';
 import { useEffect, useState } from 'react';
 
 export type InstrumentId =
-  | 'trumpet' | 'trumpet-c' | 'trumpet-d' | 'trumpet-eb' | 'trumpet-natural'
+  | 'trumpet' | 'trumpet-c' | 'trumpet-d' | 'trumpet-eb' | 'natural'
   | 'trombone'
   | 'sax-soprano' | 'sax-alto' | 'sax-tenor' | 'sax-bari';
 
@@ -30,7 +30,7 @@ export const RANGE_PRESETS: Record<InstrumentId, { label: string; min: number; m
   'trumpet-c':        TRUMPET_PRESETS,
   'trumpet-d':        TRUMPET_PRESETS,
   'trumpet-eb':       TRUMPET_PRESETS,
-  'trumpet-natural':  [{ label: 'Low', min: 58, max: 70 }, { label: 'Mid', min: 70, max: 82 }, { label: 'Full', min: 58, max: 84 }],
+  'natural':  [{ label: 'Low', min: 48, max: 72 }, { label: 'Mid', min: 36, max: 84 }, { label: 'Full', min: 21, max: 108 }],
   'trombone':         [{ label: 'Low', min: 40, max: 59 }, { label: 'Mid', min: 48, max: 67 }, { label: 'Full', min: 40, max: 70 }],
   'sax-soprano':      SAX_PRESETS,
   'sax-alto':         SAX_PRESETS,
@@ -43,7 +43,7 @@ export const DEFAULT_RANGES: Record<InstrumentId, { min: number; max: number }> 
   'trumpet-c':        { min: 72, max: 83 },
   'trumpet-d':        { min: 72, max: 83 },
   'trumpet-eb':       { min: 72, max: 83 },
-  'trumpet-natural':  { min: 70, max: 82 },
+  'natural':  { min: 48, max: 72 },
   'trombone':         { min: 48, max: 67 },
   'sax-soprano':      { min: 60, max: 84 },
   'sax-alto':         { min: 60, max: 84 },
@@ -162,9 +162,9 @@ export function SettingsPanel({ settings, onChange, notes, onClose }: Props) {
           <p className="text-xs text-(--color-text-muted)">Natural</p>
           <div className="flex gap-1.5">
             <button
-              onClick={() => onChange({ ...settings, instrument: 'trumpet-natural', noteRange: DEFAULT_RANGES['trumpet-natural'] })}
+              onClick={() => onChange({ ...settings, instrument: 'natural', noteRange: DEFAULT_RANGES['natural'] })}
               className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${
-                settings.instrument === 'trumpet-natural' ? btnActive : btnInactive
+                settings.instrument === 'natural' ? btnActive : btnInactive
               }`}
             >
               Natural

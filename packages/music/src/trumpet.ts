@@ -73,23 +73,3 @@ export const TRUMPET_EB: InstrumentConfig = {
   notes: TRUMPET_NOTES,
 };
 
-// Natural Bb trumpet — only natural harmonic series notes (written pitch)
-// Partials: 2=Bb3, 3=F4, 4=Bb4, 5=D5, 6=F5, 7=Ab5, 8=Bb5, 9=C6
-const TRUMPET_NATURAL_NOTES: Note[] = [
-  { key: 'bb/3', label: 'Bb3', midi: 58, accidental: 'b' },
-  { key: 'f/4',  label: 'F4',  midi: 65 },
-  { key: 'bb/4', label: 'Bb4', midi: 70, accidental: 'b' },
-  { key: 'd/5',  label: 'D5',  midi: 74 },
-  { key: 'f/5',  label: 'F5',  midi: 77 },
-  { key: 'ab/5', label: 'Ab5', midi: 79, accidental: 'b' },
-  { key: 'bb/5', label: 'Bb5', midi: 82, accidental: 'b' },
-  { key: 'c/6',  label: 'C6',  midi: 84 },
-];
-
-export const TRUMPET_NATURAL: InstrumentConfig = {
-  id: 'trumpet-natural',
-  name: 'Trumpet (Natural)',
-  clef: 'treble',
-  transposition: -2,
-  notes: TRUMPET_NATURAL_NOTES,
-};
