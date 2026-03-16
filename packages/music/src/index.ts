@@ -8,7 +8,8 @@ export function getRandomNote<T extends { midi: number }>(
   exclude?: T,
 ): T {
   const pool = exclude ? notes.filter((n) => n.midi !== exclude.midi) : notes;
-  return pool[Math.floor(Math.random() * pool.length)]!;
+  const source = pool.length > 0 ? pool : notes;
+  return source[Math.floor(Math.random() * source.length)]!;
 }
 
 export function noteHz(midi: number): number {
