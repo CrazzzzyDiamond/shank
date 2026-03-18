@@ -18,11 +18,16 @@ export function noteHz(midi: number): number {
 }
 
 const NOTE_NAMES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'] as const;
+const SOLFEGE_NAMES = ['Do', 'Re♭', 'Re', 'Mi♭', 'Mi', 'Fa', 'Fa#', 'Sol', 'La♭', 'La', 'Si♭', 'Si'] as const;
 
 export function midiToLabel(midi: number): string {
   const name = NOTE_NAMES[((midi % 12) + 12) % 12];
   const octave = Math.floor(midi / 12) - 1;
   return `${name}${octave}`;
+}
+
+export function midiToSolfege(midi: number): string {
+  return SOLFEGE_NAMES[((midi % 12) + 12) % 12]!;
 }
 
 export function hzToLabel(hz: number): string {

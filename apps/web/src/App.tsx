@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { TRUMPET, TRUMPET_C, TRUMPET_D, TRUMPET_EB, NATURAL, TROMBONE, SAX_SOPRANO, SAX_ALTO, SAX_TENOR, SAX_BARI, getRandomNote, isNoteMatch, hzToCents, midiToLabel } from '@shank/music';
+import { TRUMPET, TRUMPET_C, TRUMPET_D, TRUMPET_EB, NATURAL, TROMBONE, SAX_SOPRANO, SAX_ALTO, SAX_TENOR, SAX_BARI, getRandomNote, isNoteMatch, hzToCents, midiToLabel, midiToSolfege } from '@shank/music';
 import type { InstrumentConfig } from '@shank/music';
 import { NoteDisplay } from './components/NoteDisplay';
 import { CentsIndicator } from './components/CentsIndicator';
@@ -209,7 +209,7 @@ function App() {
       <main className="flex flex-1 flex-col items-center justify-center gap-5 px-4 pt-14 pb-32 sm:gap-10 sm:pt-0 sm:pb-0">
         <div className="flex flex-col items-center gap-3 sm:gap-6">
           <p className={`text-2xl font-semibold tracking-widest transition-colors duration-300 ${success ? 'text-green-400' : 'text-(--color-text-muted)'}`}>
-            {note.label}
+            {note.label} / {midiToSolfege(note.midi)}
           </p>
 
           <div className={`w-fit rounded-2xl bg-(--color-surface) px-1 py-0 sm:px-6 sm:py-4 ${success ? 'note-success' : ''}`}>
