@@ -296,7 +296,7 @@ function App() {
         />
         <aside
           style={{ transform: settingsOpen ? 'translateX(0)' : 'translateX(100%)', transition: 'transform 200ms ease-in-out' }}
-          className="fixed right-0 top-0 h-full w-80 border-l border-(--color-border) bg-(--color-bg)"
+          className="fixed right-0 top-0 h-full w-80 overflow-y-auto border-l border-(--color-border) bg-(--color-bg)"
         >
           <SettingsPanel
             settings={settings}
