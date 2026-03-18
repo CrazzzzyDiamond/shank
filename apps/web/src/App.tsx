@@ -4,8 +4,9 @@ import type { InstrumentConfig } from '@shank/music';
 import { NoteDisplay } from './components/NoteDisplay';
 import { CentsIndicator } from './components/CentsIndicator';
 import { CatRive } from './components/CatRive';
-import { SettingsPanel, DEFAULT_SETTINGS } from './components/SettingsPanel';
-import type { Settings } from './components/SettingsPanel';
+import { SettingsPanel } from './components/SettingsPanel';
+import { DEFAULT_SETTINGS } from './components/settings';
+import type { Settings } from './components/settings';
 import { usePitchDetector } from './hooks/usePitchDetector';
 
 declare function gtag(...args: unknown[]): void;
