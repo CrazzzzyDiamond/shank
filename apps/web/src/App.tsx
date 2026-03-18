@@ -206,7 +206,7 @@ function App() {
 
   return (
     <div className="flex min-h-screen">
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-5 px-4 pt-14 pb-32 sm:gap-10 sm:pt-0 sm:pb-0">
+      <main className="flex flex-1 flex-col items-center justify-center gap-5 px-4 pt-14 pb-32 sm:gap-10 sm:pt-0 sm:pb-0">
         <div className="flex flex-col items-center gap-3 sm:gap-6">
           <p className={`text-2xl font-semibold tracking-widest transition-colors duration-300 ${success ? 'text-green-400' : 'text-(--color-text-muted)'}`}>
             {note.label}
@@ -285,7 +285,7 @@ function App() {
         </svg>
       </button>
 
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0">
+      <div className="fixed bottom-0 left-1/2 -z-10 -translate-x-1/2 sm:left-0 sm:translate-x-0">
         <CatRive cents={pitchInfo?.cents ?? null} success={success} />
       </div>
 
