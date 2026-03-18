@@ -44,6 +44,13 @@ interface PitchInfo {
 function App() {
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [compact, setCompact] = useState(() => window.innerWidth < 640);
+
+  useEffect(() => {
+    const handler = () => setCompact(window.innerWidth < 640);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   const { notes, clef, transposition } = INSTRUMENTS[settings.instrument];
 
@@ -199,25 +206,25 @@ function App() {
 
   return (
     <div className="flex min-h-screen">
-      <main className="flex flex-1 flex-col items-center justify-center gap-10 px-4">
-        <div className="flex flex-col items-center gap-6">
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-5 px-4 pt-14 pb-32 sm:gap-10 sm:pt-0 sm:pb-0">
+        <div className="flex flex-col items-center gap-3 sm:gap-6">
           <p className={`text-2xl font-semibold tracking-widest transition-colors duration-300 ${success ? 'text-green-400' : 'text-(--color-text-muted)'}`}>
             {note.label}
           </p>
 
-          <div className={`rounded-2xl bg-(--color-surface) px-6 py-4 ${success ? 'note-success' : ''}`}>
-            <NoteDisplay key={settings.theme} note={note} clef={clef} />
+          <div className={`w-fit rounded-2xl bg-(--color-surface) px-1 py-0 sm:px-6 sm:py-4 ${success ? 'note-success' : ''}`}>
+            <NoteDisplay key={settings.theme} note={note} clef={clef} compact={compact} />
           </div>
 
           {state === 'listening' && (
-            <div className="flex w-82 flex-col items-center gap-3">
+            <div className="flex w-56 flex-col items-center gap-2 sm:w-82 sm:gap-3">
               <CentsIndicator cents={pitchInfo?.cents ?? 0} />
 
               <p className="h-5 text-sm text-(--color-text-muted)">
                 {pitchInfo ? `${pitchInfo.label} · ${Math.round(pitchInfo.hz)} Hz` : '—'}
               </p>
 
-              <div className="h-3 w-72 overflow-hidden rounded-full bg-(--color-surface-2)">
+              <div className="h-3 w-full overflow-hidden rounded-full bg-(--color-surface-2)">
                 <div
                   className="h-full rounded-full bg-(--color-accent)"
                   style={{ width: `${progress * 100}%` }}
@@ -240,7 +247,7 @@ function App() {
           {state === 'idle' || state === 'error' ? (
             <button
               onClick={handleStart}
-              className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-amber-100 transition-colors hover:bg-(--color-surface-2) active:scale-95"
+              className="w-72 rounded-2xl bg-(--color-surface) py-3 text-xl font-bold tracking-widest text-amber-100 transition-colors hover:bg-(--color-surface-2) active:scale-95 sm:py-5"
             >
               START
             </button>
@@ -248,7 +255,7 @@ function App() {
             <>
               <button
                 onClick={handleNext}
-                className="w-72 rounded-2xl bg-(--color-surface) py-5 text-xl font-bold tracking-widest text-amber-100 transition-colors hover:bg-(--color-surface-2) active:scale-95"
+                className="w-72 rounded-2xl bg-(--color-surface) py-3 text-xl font-bold tracking-widest text-amber-100 transition-colors hover:bg-(--color-surface-2) active:scale-95 sm:py-5"
               >
                 NEXT
               </button>
@@ -278,7 +285,7 @@ function App() {
         </svg>
       </button>
 
-      <div className="fixed bottom-0 left-0">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0">
         <CatRive cents={pitchInfo?.cents ?? null} success={success} />
       </div>
 

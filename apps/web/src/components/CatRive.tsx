@@ -23,5 +23,5 @@ export function CatRive({ cents, success }: Props) {
     if (isHovered) isHovered.value = inTune || success;
   }, [inTune, success, isHovered]);
 
-  return <RiveComponent style={{ width: 384, height: 384 }} />;
+  return <RiveComponent style={{ width: 'min(384px, 45vw)', height: 'min(384px, 45vw)' }} />;
 }

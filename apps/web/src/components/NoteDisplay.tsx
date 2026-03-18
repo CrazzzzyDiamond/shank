@@ -5,17 +5,19 @@ import type { Note } from '@shank/music';
 interface Props {
   note: Note;
   clef?: 'treble' | 'bass';
+  compact?: boolean;
 }
 
-const WIDTH = 280;
-const HEIGHT = 160;
-const STAVE_X = 16;
-const STAVE_Y = 24;
-const STAVE_WIDTH = WIDTH - STAVE_X * 2;
-export function NoteDisplay({ note, clef = 'treble' }: Props) {
+export function NoteDisplay({ note, clef = 'treble', compact = false }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const WIDTH       = compact ? 220 : 280;
+    const HEIGHT      = compact ? 155 : 160;
+    const STAVE_X     = compact ?  12 :  16;
+    const STAVE_Y     = compact ?  16 :  24;
+    const STAVE_WIDTH = WIDTH - STAVE_X * 2;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -51,12 +53,13 @@ export function NoteDisplay({ note, clef = 'treble' }: Props) {
     // Apply color to all SVG paths (clef, note head, etc.)
     const svg = container.querySelector('svg');
     if (svg) {
+      svg.style.overflow = 'visible';
       svg.querySelectorAll('path, rect, use').forEach((el) => {
         (el as SVGElement).style.fill = noteColor;
         (el as SVGElement).style.stroke = noteColor;
       });
     }
-  }, [note, clef]);
+  }, [note, clef, compact]);
 
   return <div ref={containerRef} />;
 }
